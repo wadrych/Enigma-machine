@@ -138,6 +138,23 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ElectroMechanicalElement.cpp" />
+    <ClCompile Include="Enigma.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Reflector.cpp" />
+    <ClCompile Include="ReflectorService.cpp" />
+    <ClCompile Include="Rotor.cpp" />
+    <ClCompile Include="RotorService.cpp" />
+    <ClCompile Include="TaskManager.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ElectroMechanicalElement.h" />
+    <ClInclude Include="Enigma.h" />
+    <ClInclude Include="Reflector.h" />
+    <ClInclude Include="ReflectorService.h" />
+    <ClInclude Include="Rotor.h" />
+    <ClInclude Include="RotorService.h" />
+    <ClInclude Include="TaskManager.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
