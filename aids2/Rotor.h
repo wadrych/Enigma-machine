@@ -23,6 +23,7 @@ public:
 	int GetLetterByPermutation(int input) override;
 	int GetPermutationByLetter(int input) override;
 	bool IsLockedBefore();
+	void Print();
 	
 private:
 	int currentPosition;

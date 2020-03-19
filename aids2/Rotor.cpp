@@ -17,8 +17,10 @@ Rotor::Rotor(RotorDTO* rotor)
 void Rotor::populateWithPermutations(RotorDTO* rotor)
 {	
 	for(int i=0; i<length; i++) {
-		signalOutlet[i].letter = i;
-		signalOutlet[i].permutation = rotor->signalOutlet[i].permutation-1;
+		
+		//signalOutlet[i].letter = (rotor->signalOutlet[i].permutation - 1) - i;
+		signalOutlet[i].permutation = (rotor->signalOutlet[i].permutation-1) - i;
+		signalOutlet[(rotor->signalOutlet[i].permutation - 1)].letter = -((rotor->signalOutlet[i].permutation - 1) - i);
 	}
 }
 
@@ -79,6 +81,8 @@ void Rotor::Turn()
 			notchSet = true;
 		}
 	}
+
+	//Print();
 }
 
 void Rotor::SetPosition(int position)
@@ -92,16 +96,18 @@ void Rotor::SetPosition(int position)
 
 int Rotor::GetLetterByPermutation(int input)
 {
-	const int permutation = signalOutlet[input].permutation;
+	const int delta = signalOutlet[input].permutation;
 
-	return findPositionOfPermutationInAlphabet(permutation);
+	const int result = (input + delta) % length;
+	return result>=0 ? result : result + length;
 }
 
 int Rotor::GetPermutationByLetter(int input)
 {
-	const int letter = signalOutlet[input].letter;
+	const int delta = signalOutlet[input].letter;
 
-	return findPositionOfPermutationLetterInPermutations(letter);
+	const int result = (input + delta) % length;
+	return result >= 0 ? result : result + length;
 }
 
 int Rotor::findPositionOfPermutationLetterInPermutations(int letter) const
@@ -120,4 +126,19 @@ int Rotor::findPositionOfPermutationInAlphabet(int permutation) const
 	}
 	
 	return 0;
+}
+
+void Rotor::Print()
+{
+	printf("\n");
+	for(int i=0;i<length;i++)
+	{
+		printf("%i ", signalOutlet[i].letter);
+	}
+	printf("\n");
+	for (int i = 0; i < length; i++)
+	{
+		printf("%i ", signalOutlet[i].permutation);
+	}
+	printf("\n");
 }
