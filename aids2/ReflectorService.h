@@ -1,16 +1,19 @@
 #pragma once
 #include "Reflector.h"
+
 class ReflectorService
 {
 public:
-	ReflectorService(int length);
+	ReflectorService(int alphabetSize);
 	~ReflectorService();
 	void Create();
-	Reflector* GetReflector(int index);
+	ReflectorDTO* GetReflector(int index);
 	
 private:
-	Reflector** reflectorsArray;
+	ReflectorDTO** reflectorsArray;
+	int alphabetSize;
 	int length;
-	
+
+	ReflectorDTO* GetInputFromUser();
 };
 

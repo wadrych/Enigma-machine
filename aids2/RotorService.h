@@ -4,13 +4,16 @@
 class RotorService
 {
 public:
-	RotorService(int length);
+	RotorService(int alphabetSize);
 	~RotorService();
 	void Create();
-	Rotor* GetRotor(int index);
+	RotorDTO* GetRotor(int index);
 	
 private:
-	Rotor** rotorsArray;
+	RotorDTO** rotorsArray;
+	int alphabetSize;
 	int length;
+
+	RotorDTO* GetInputFromUser();
 };
 

@@ -1,12 +1,17 @@
 #pragma once
 #include "ElectroMechanicalElement.h"
+
+typedef struct ReflectorDTO {
+	Circuit* signalOutlet;
+	int length;
+} reflectorDTO;
+
 class Reflector :
 	public ElectroMechanicalElement
 {
 public:
-	Reflector(int length);
+	Reflector(ReflectorDTO* reflector);
 	~Reflector() override;
-	Reflector* Clone() const;
 	int GetLetterByPermutation(int input) override;
 	int GetPermutationByLetter(int input) override;
 	
@@ -14,6 +19,6 @@ private:
 	int length;
 
 	int findPositionOfPermutationInAlphabet(int permutation) const;
-	void populateWithPermutations() ;
+	void populateWithPermutations(ReflectorDTO* reflector);
 };
 

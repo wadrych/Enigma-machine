@@ -1,29 +1,55 @@
 #include "ReflectorService.h"
 #include "Rotor.h"
 
-ReflectorService::ReflectorService(int length) : length(length)
-{
+ReflectorService::ReflectorService(int alphabetSize) : alphabetSize(alphabetSize) {
+	reflectorsArray = nullptr;
+	length = 0;
 }
 
 ReflectorService::~ReflectorService()
 {
+	for(int i=0;i<length;i++) {
+		delete[] reflectorsArray[i]->signalOutlet;
+		reflectorsArray[i]->signalOutlet = nullptr;
+		delete reflectorsArray[i];
+		reflectorsArray[i] = nullptr;
+	}
 	delete[] reflectorsArray;
+	reflectorsArray = nullptr;
 }
 
 void ReflectorService::Create()
 {
-	int amountOfReflectors;
-	scanf_s("%i", &amountOfReflectors);
+	scanf_s("%i", &length);
 
-	reflectorsArray = new Reflector* [amountOfReflectors];
+	reflectorsArray = new ReflectorDTO* [length];
 
-	for (int i = 0; i < amountOfReflectors; i++) {
-		Reflector *newReflector = new Reflector(length);
-		reflectorsArray[i] = newReflector;
+	for (int i = 0; i < length; i++) {
+		reflectorsArray[i] = GetInputFromUser();
 	}
 }
 
-Reflector* ReflectorService::GetReflector(int index)
+ReflectorDTO* ReflectorService::GetInputFromUser() {
+	ReflectorDTO* newReflector = new ReflectorDTO();
+
+	newReflector->length = alphabetSize;
+
+	Circuit* signalOutlet = new Circuit[newReflector->length];
+
+	for (int i = 0; i < newReflector->length; i++) {
+		int permutation;
+		scanf_s("%i", &permutation);
+		signalOutlet[i].permutation = permutation;
+		signalOutlet[i].letter = i;
+	}
+
+	newReflector->signalOutlet = signalOutlet;
+
+	return newReflector;
+}
+
+
+ReflectorDTO* ReflectorService::GetReflector(int index)
 {
 	return reflectorsArray[index];
 }

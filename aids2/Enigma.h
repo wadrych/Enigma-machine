@@ -8,8 +8,8 @@ class Enigma
 public:
 	Enigma(int amountOfParts);
 	~Enigma();
-	void AddRotor(Rotor* rotor);
-	void AddReflector(Reflector* reflector);
+	void AddRotor(RotorDTO* rotor);
+	void AddReflector(ReflectorDTO* reflector);
 	int EncodeLetter(int letter);
 	
 	

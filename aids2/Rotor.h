@@ -2,29 +2,38 @@
 
 #include  "ElectroMechanicalElement.h"
 
+typedef struct RotorDTO {
+	Circuit* signalOutlet;
+	int length;
+	int* turnoverPositions;
+	int amountOfTurnoverPositions;
+	int currentPosition;
+	int initialTurn;
+} rotor;
+
 class Rotor :
 	public ElectroMechanicalElement
 {
 public:
-	Rotor(int length);
+	Rotor(RotorDTO* rotor);
 	~Rotor() override;
-	Rotor* Clone() const;
 	void SetPosition(int position);
-	bool IsLocked() const;
+	bool IsLocked();
 	void Turn();
 	int GetLetterByPermutation(int input) override;
 	int GetPermutationByLetter(int input) override;
-	void Print();
+	bool IsLockedBefore();
 	
 private:
 	int currentPosition;
 	int* turnoverPositions;
 	int amountOfTurnoverPositions;
 	int length;
+	bool notchSet;
 
 	int findPositionOfPermutationInAlphabet(int permutation) const;
 	int findPositionOfPermutationLetterInPermutations(int letter) const;
-	void populateWithPermutations();
-	void pupulateWithTurnovers();
+	void populateWithPermutations(RotorDTO* rotor);
+	void populateWithTurnovers(RotorDTO* rotor);
 };
 

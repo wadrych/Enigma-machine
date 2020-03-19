@@ -18,6 +18,6 @@ private:
 
 	void SetRotors(Enigma* enigma, int amountOfRotors);
 	void SetReflector(Enigma* enigma);
-	void EncodeLetter(Enigma* enigma, int* letter);
+	static void EncodeLetter(Enigma* enigma, int* letter);
 };
 

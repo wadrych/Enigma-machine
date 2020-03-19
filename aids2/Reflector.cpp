@@ -1,25 +1,22 @@
 #include "Reflector.h"
 
-Reflector::Reflector(int length) : length(length)
+Reflector::Reflector(ReflectorDTO* reflector)
 {
+	length = reflector->length;
 	signalOutlet = new Circuit[length];
 
-	populateWithPermutations();
+	populateWithPermutations(reflector);
 }
 
-void Reflector::populateWithPermutations()
+void Reflector::populateWithPermutations(ReflectorDTO* reflector)
 {
-	int permutation;
-
 	for (int i = 0; i < length; i++) {
-		scanf_s("%i", &permutation);
 		signalOutlet[i].letter = i;
-		signalOutlet[i].permutation = permutation-1;
+		signalOutlet[i].permutation = reflector->signalOutlet[i].permutation-1;
 	}
 }
 
-Reflector::~Reflector()
-{
+Reflector::~Reflector() {
 }
 
 int Reflector::GetLetterByPermutation(int input)
@@ -40,11 +37,5 @@ int Reflector::findPositionOfPermutationInAlphabet(int permutation) const
 }
 
 int Reflector::GetPermutationByLetter(int input) {
-	return 0;
-}
-
-
-Reflector* Reflector::Clone() const
-{
-	return new Reflector(*this);
+	return input;
 }
