@@ -52,8 +52,8 @@ void Enigma::setRotators() {
 
 	if(amountOfParts >= 4) {
 		if (rotors[1]->IsLockedBefore()) {
-			rotors[0]->CleanNotch();
-			//rotors[0]->IsLocked();
+			//rotors[0]->CleanNotch();
+			rotors[0]->IsLocked();
 			rotors[1]->Turn();
 			rotors[2]->Turn();
 		}

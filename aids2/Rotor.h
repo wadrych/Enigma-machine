@@ -26,7 +26,7 @@ public:
 private:
 	RotorDTO* rotorPattern;
 	int currentPosition;
-	int* turnoverPositions;
+	bool* turnoverPositions;
 	int amountOfTurnoverPositions;
 	int length;
 	bool notchSet;

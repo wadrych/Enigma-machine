@@ -4,9 +4,9 @@
 Rotor::Rotor(RotorDTO* rotor) : rotorPattern(rotor) {
 	length = rotorPattern->length;
 	signalOutlet = new Circuit[length];
+	turnoverPositions = new bool[length];
 	currentPosition = 0;
 	notchSet = false;
-	turnoverPositions = nullptr;
 	amountOfTurnoverPositions = 0;
 
 	populateWithPermutations();
@@ -28,11 +28,15 @@ void Rotor::populateWithPermutations() {
 
 void Rotor::populateWithTurnovers() {
 	const int offset = 1;
+	
 	amountOfTurnoverPositions = rotorPattern->amountOfTurnoverPositions;
-	turnoverPositions = new int[amountOfTurnoverPositions];
+	for(int i=0; i<length; i++) {
+		turnoverPositions[i] = false;
+	}
 
 	for(int i=0; i<amountOfTurnoverPositions; i++) {
-		turnoverPositions[i] = rotorPattern->turnoverPositions[i]-offset;
+		const int indexOfTurnover = rotorPattern->turnoverPositions[i] - offset;
+		turnoverPositions[indexOfTurnover] = true;
 	}
 }
 
@@ -41,38 +45,34 @@ Rotor::~Rotor() {
 }
 
 bool Rotor::IsLocked() {
-	for(int i=0; i<amountOfTurnoverPositions; i++) {
-		if(turnoverPositions[i] == currentPosition && notchSet) {
-			notchSet = false;
-			return true;
-		}
+	if(turnoverPositions[currentPosition] && notchSet) {
+		notchSet = false;
+		return true;
 	}
-	return false;
+	else {
+		return false;
+	}
 }
 
 bool Rotor::IsLockedBefore() {
-	for (int i=0; i<amountOfTurnoverPositions; i++) {
-		const int realTurnoverPos = mathematicalRemainder(turnoverPositions[i] - 1);
-
-		if (realTurnoverPos == currentPosition && notchSet) {
-			notchSet = false;
-			return true;
-		}
+	const int indexOfElementBefore = mathematicalRemainder(currentPosition + 1);
+	
+	if(turnoverPositions[indexOfElementBefore] && notchSet) {
+		notchSet = false;
+		return true;
 	}
-	return false;
+	else {
+		return false;
+	}
 }
 
 void Rotor::Turn() {
 	currentPosition++;
 	currentPosition = currentPosition % length;
 
-	for (int i=0; i<amountOfTurnoverPositions; i++) {
-		const int realTurnoverPos = mathematicalRemainder(turnoverPositions[i] - 1);
-		
-		if (currentPosition == realTurnoverPos) {
-			notchSet = true;
-			break;
-		}
+	const int indexOfNextElement = mathematicalRemainder(currentPosition + 1);
+	if(turnoverPositions[indexOfNextElement]) {
+		notchSet = true;
 	}
 }
 
