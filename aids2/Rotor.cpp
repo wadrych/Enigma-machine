@@ -17,9 +17,9 @@ Rotor::Rotor(RotorDTO* rotor)
 void Rotor::populateWithPermutations(RotorDTO* rotor)
 {	
 	for (int i = 0; i < length; i++) {
-		const int delta = (rotor->signalOutlet[i].permutation - 1) - i;
-		signalOutlet[i].permutation = delta;
-		signalOutlet[delta + i].letter = -delta;
+		const int delta = (rotor->signalOutlet[getIndex(i)].permutation - 1) - i;
+		signalOutlet[getIndex(i)].permutation = delta;
+		signalOutlet[getIndex(delta +i)].letter = -delta;
 	}
 }
 
@@ -45,26 +45,24 @@ bool Rotor::IsLocked()
 			return true;
 		}
 	}
-	
 	return false;
 }
 
 bool Rotor::IsLockedBefore()
 {
-	for (int i = 0; i < amountOfTurnoverPositions; i++) {
+	for (int i=0; i<amountOfTurnoverPositions; i++) {
 		if (turnoverPositions[i]-1 == currentPosition && notchSet) {
 			notchSet = false;
 			return true;
 		}
 	}
-
 	return false;
 }
 
 
 void Rotor::Turn()
 {
-	const Circuit temp = signalOutlet[0];
+	/*const Circuit temp = signalOutlet[0];
 	const int lastIndex = length - 1;
 
 	for (int i=0; i<lastIndex; i++) {
@@ -72,8 +70,9 @@ void Rotor::Turn()
 	}
 
 	signalOutlet[lastIndex] = temp;
-
-	currentPosition = (++currentPosition) % length;
+	*/
+	currentPosition++;
+	currentPosition = currentPosition % length;
 
 	for (int i=0;i<amountOfTurnoverPositions;i++) {
 		if (currentPosition == turnoverPositions[i]-1) {
@@ -95,7 +94,7 @@ void Rotor::SetPosition(int position)
 
 int Rotor::GetLetterByPermutation(int input)
 {
-	const int delta = signalOutlet[input].permutation;
+	const int delta = signalOutlet[getIndex(input)].permutation;
 
 	const int result = (input + delta) % length;
 	return result >= 0 ? result : result + length;
@@ -103,7 +102,7 @@ int Rotor::GetLetterByPermutation(int input)
 
 int Rotor::GetPermutationByLetter(int input)
 {
-	const int delta = signalOutlet[input].letter;
+	const int delta = signalOutlet[getIndex(input)].letter;
 
 	const int result = (input + delta) % length;
 	return result >= 0 ? result : result + length;
@@ -122,4 +121,10 @@ void Rotor::Print()
 		printf("%i ", signalOutlet[i].permutation);
 	}
 	printf("\n");
+}
+
+int Rotor::getIndex(int index) {
+	const int currentIndex = (index + currentPosition) % length;
+	
+	return currentIndex;
 }

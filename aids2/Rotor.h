@@ -34,5 +34,6 @@ private:
 
 	void populateWithPermutations(RotorDTO* rotor);
 	void populateWithTurnovers(RotorDTO* rotor);
+	int getIndex(int index);
 };
 
