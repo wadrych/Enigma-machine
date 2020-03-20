@@ -7,11 +7,13 @@ Rotor::Rotor(RotorDTO* rotor)
 	signalOutlet = new Circuit[length];
 	currentPosition = 0;
 	notchSet = false;
+	turnoverPositions = nullptr;
+	amountOfTurnoverPositions = 0;
 
 	populateWithPermutations(rotor);
 	populateWithTurnovers(rotor);
 
-	SetPosition(rotor->initialTurn);
+	SetInitialPosition(rotor->initialTurn);
 }
 
 void Rotor::populateWithPermutations(RotorDTO* rotor)
@@ -59,18 +61,8 @@ bool Rotor::IsLockedBefore()
 	return false;
 }
 
-
 void Rotor::Turn()
 {
-	/*const Circuit temp = signalOutlet[0];
-	const int lastIndex = length - 1;
-
-	for (int i=0; i<lastIndex; i++) {
-		signalOutlet[i] = signalOutlet[i + 1];
-	}
-
-	signalOutlet[lastIndex] = temp;
-	*/
 	currentPosition++;
 	currentPosition = currentPosition % length;
 
@@ -79,16 +71,11 @@ void Rotor::Turn()
 			notchSet = true;
 		}
 	}
-
-	//Print();
 }
 
-void Rotor::SetPosition(int position)
+void Rotor::SetInitialPosition(int position)
 {
-	while (currentPosition != position-1) {
-		Turn();
-	}
-
+	currentPosition = position-1;
 	notchSet = false;
 }
 
@@ -108,22 +95,7 @@ int Rotor::GetPermutationByLetter(int input)
 	return result >= 0 ? result : result + length;
 }
 
-void Rotor::Print()
-{
-	printf("\n");
-	for(int i=0;i<length;i++)
-	{
-		printf("%i ", signalOutlet[i].letter);
-	}
-	printf("\n");
-	for (int i = 0; i < length; i++)
-	{
-		printf("%i ", signalOutlet[i].permutation);
-	}
-	printf("\n");
-}
-
-int Rotor::getIndex(int index) {
+int Rotor::getIndex(int index) const {
 	const int currentIndex = (index + currentPosition) % length;
 	
 	return currentIndex;

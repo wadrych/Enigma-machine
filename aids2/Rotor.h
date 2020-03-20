@@ -17,13 +17,12 @@ class Rotor :
 public:
 	Rotor(RotorDTO* rotor);
 	~Rotor() override;
-	void SetPosition(int position);
+	void SetInitialPosition(int position);
 	bool IsLocked();
 	void Turn();
 	int GetLetterByPermutation(int input) override;
 	int GetPermutationByLetter(int input) override;
 	bool IsLockedBefore();
-	void Print();
 	
 private:
 	int currentPosition;
@@ -34,6 +33,6 @@ private:
 
 	void populateWithPermutations(RotorDTO* rotor);
 	void populateWithTurnovers(RotorDTO* rotor);
-	int getIndex(int index);
+	int getIndex(int index) const;
 };
 
