@@ -71,6 +71,7 @@ void Rotor::Turn() {
 		
 		if (currentPosition == realTurnoverPos) {
 			notchSet = true;
+			break;
 		}
 	}
 }
