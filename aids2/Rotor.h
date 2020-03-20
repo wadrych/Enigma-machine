@@ -32,8 +32,6 @@ private:
 	int length;
 	bool notchSet;
 
-	int findPositionOfPermutationInAlphabet(int permutation) const;
-	int findPositionOfPermutationLetterInPermutations(int letter) const;
 	void populateWithPermutations(RotorDTO* rotor);
 	void populateWithTurnovers(RotorDTO* rotor);
 };

@@ -11,8 +11,9 @@ Reflector::Reflector(ReflectorDTO* reflector)
 void Reflector::populateWithPermutations(ReflectorDTO* reflector)
 {
 	for (int i = 0; i < length; i++) {
-		signalOutlet[i].letter = i;
-		signalOutlet[i].permutation = reflector->signalOutlet[i].permutation-1;
+		const int delta = (reflector->signalOutlet[i].permutation - 1) - i;
+		signalOutlet[i].permutation = delta;
+		signalOutlet[delta + i].letter = -delta;
 	}
 }
 
@@ -21,19 +22,10 @@ Reflector::~Reflector() {
 
 int Reflector::GetLetterByPermutation(int input)
 {
-	const int permutation = signalOutlet[input].permutation;
+	const int delta = signalOutlet[input].permutation;
 
-	return findPositionOfPermutationInAlphabet(permutation);
-}
-
-
-int Reflector::findPositionOfPermutationInAlphabet(int permutation) const
-{
-	for (int i = 0; i < length; i++) {
-		if (signalOutlet[i].letter == permutation) return i;
-	}
-
-	return 0;
+	const int result = (input + delta) % length;
+	return result >= 0 ? result : result + length;
 }
 
 int Reflector::GetPermutationByLetter(int input) {

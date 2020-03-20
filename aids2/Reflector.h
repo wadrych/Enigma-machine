@@ -18,7 +18,6 @@ public:
 private:
 	int length;
 
-	int findPositionOfPermutationInAlphabet(int permutation) const;
 	void populateWithPermutations(ReflectorDTO* reflector);
 };
 

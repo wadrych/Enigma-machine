@@ -16,11 +16,10 @@ Rotor::Rotor(RotorDTO* rotor)
 
 void Rotor::populateWithPermutations(RotorDTO* rotor)
 {	
-	for(int i=0; i<length; i++) {
-		
-		//signalOutlet[i].letter = (rotor->signalOutlet[i].permutation - 1) - i;
-		signalOutlet[i].permutation = (rotor->signalOutlet[i].permutation-1) - i;
-		signalOutlet[(rotor->signalOutlet[i].permutation - 1)].letter = -((rotor->signalOutlet[i].permutation - 1) - i);
+	for (int i = 0; i < length; i++) {
+		const int delta = (rotor->signalOutlet[i].permutation - 1) - i;
+		signalOutlet[i].permutation = delta;
+		signalOutlet[delta + i].letter = -delta;
 	}
 }
 
@@ -99,7 +98,7 @@ int Rotor::GetLetterByPermutation(int input)
 	const int delta = signalOutlet[input].permutation;
 
 	const int result = (input + delta) % length;
-	return result>=0 ? result : result + length;
+	return result >= 0 ? result : result + length;
 }
 
 int Rotor::GetPermutationByLetter(int input)
@@ -108,24 +107,6 @@ int Rotor::GetPermutationByLetter(int input)
 
 	const int result = (input + delta) % length;
 	return result >= 0 ? result : result + length;
-}
-
-int Rotor::findPositionOfPermutationLetterInPermutations(int letter) const
-{
-	for (int i = 0; i < length; i++) {
-		if (signalOutlet[i].permutation == letter) return i;
-	}
-
-	return 0;
-}
-
-int Rotor::findPositionOfPermutationInAlphabet(int permutation) const
-{
-	for(int i=0; i<length; i++) {
-		if (signalOutlet[i].letter == permutation) return i;
-	}
-	
-	return 0;
 }
 
 void Rotor::Print()
