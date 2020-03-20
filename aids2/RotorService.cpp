@@ -6,8 +6,7 @@ RotorService::RotorService(int alphabetSize) : alphabetSize(alphabetSize) {
 	length = 0;
 }
 
-RotorService::~RotorService()
-{
+RotorService::~RotorService() {
 	for(int i=0; i<length; i++) {
 		delete[] rotorsArray[i]->signalOutlet;
 		rotorsArray[i]->signalOutlet = nullptr;
@@ -20,51 +19,50 @@ RotorService::~RotorService()
 	rotorsArray = nullptr;
 }
 
-void RotorService::Create()
-{
+void RotorService::Create() {
 	scanf_s("%i", &length);
 
 	rotorsArray = new RotorDTO* [length];
 
 	for (int i = 0; i < length; i++) {
-		rotorsArray[i] = GetInputFromUser();
+		rotorsArray[i] = createRotor();
 	}
 }
 
-RotorDTO* RotorService::GetRotor(int index)
-{
+RotorDTO* RotorService::GetRotor(int index) {
 	return rotorsArray[index];
 }
 
-RotorDTO* RotorService::GetInputFromUser()
-{
+RotorDTO* RotorService::createRotor() {
 	RotorDTO* newRotor = new RotorDTO();
-
 	newRotor->length = alphabetSize;
 
 	Circuit* signalOutlet = new Circuit[newRotor->length];
+	readCircuits(newRotor, signalOutlet);
+	newRotor->signalOutlet = signalOutlet;
 
-	for (int i=0; i<newRotor->length; i++) {
+	scanf_s("%i", &newRotor->amountOfTurnoverPositions);
+	int* turnoverPositions = new int[newRotor->amountOfTurnoverPositions];
+	readTurnovers(newRotor, turnoverPositions);
+	newRotor->turnoverPositions = turnoverPositions;
+	newRotor->initialTurn = 0;
+	
+	return newRotor;
+}
+
+void RotorService::readCircuits(RotorDTO* newRotor, Circuit* signalOutlet) {
+	for (int i = 0; i < newRotor->length; i++) {
 		int permutation;
 		scanf_s("%i", &permutation);
 		signalOutlet[i].permutation = permutation;
 		signalOutlet[i].letter = i;
 	}
+}
 
-	newRotor->signalOutlet = signalOutlet;
-
-	scanf_s("%i", &newRotor->amountOfTurnoverPositions);
-
-	int* turnoverPositions = new int[newRotor->amountOfTurnoverPositions];
-	
-	for(int i=0; i<newRotor->amountOfTurnoverPositions; i++) {
+void RotorService::readTurnovers(RotorDTO* newRotor, int* turnoverPositions) {
+	for (int i = 0; i < newRotor->amountOfTurnoverPositions; i++) {
 		int turnover;
 		scanf_s("%i", &turnover);
 		turnoverPositions[i] = turnover;
 	}
-
-	newRotor->turnoverPositions = turnoverPositions;
-	newRotor->initialTurn = 0;
-	
-	return newRotor;
 }

@@ -1,15 +1,13 @@
 #include "Reflector.h"
 
-Reflector::Reflector(ReflectorDTO* reflector)
-{
+Reflector::Reflector(ReflectorDTO* reflector) {
 	length = reflector->length;
 	signalOutlet = new Circuit[length];
 
 	populateWithPermutations(reflector);
 }
 
-void Reflector::populateWithPermutations(ReflectorDTO* reflector)
-{
+void Reflector::populateWithPermutations(ReflectorDTO* reflector) {
 	for (int i = 0; i < length; i++) {
 		const int delta = (reflector->signalOutlet[i].permutation - 1) - i;
 		signalOutlet[i].permutation = delta;
@@ -20,8 +18,7 @@ void Reflector::populateWithPermutations(ReflectorDTO* reflector)
 Reflector::~Reflector() {
 }
 
-int Reflector::GetLetterByPermutation(int input)
-{
+int Reflector::GetLetterByPermutation(int input) {
 	const int delta = signalOutlet[input].permutation;
 
 	const int result = (input + delta) % length;

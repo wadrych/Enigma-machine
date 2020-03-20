@@ -1,13 +1,11 @@
 #include "ReflectorService.h"
-#include "Rotor.h"
 
 ReflectorService::ReflectorService(int alphabetSize) : alphabetSize(alphabetSize) {
 	reflectorsArray = nullptr;
 	length = 0;
 }
 
-ReflectorService::~ReflectorService()
-{
+ReflectorService::~ReflectorService() {
 	for(int i=0;i<length;i++) {
 		delete[] reflectorsArray[i]->signalOutlet;
 		reflectorsArray[i]->signalOutlet = nullptr;
@@ -18,18 +16,17 @@ ReflectorService::~ReflectorService()
 	reflectorsArray = nullptr;
 }
 
-void ReflectorService::Create()
-{
+void ReflectorService::Create() {
 	scanf_s("%i", &length);
 
 	reflectorsArray = new ReflectorDTO* [length];
 
 	for (int i = 0; i < length; i++) {
-		reflectorsArray[i] = GetInputFromUser();
+		reflectorsArray[i] = createReflector();
 	}
 }
 
-ReflectorDTO* ReflectorService::GetInputFromUser() {
+ReflectorDTO* ReflectorService::createReflector() {
 	ReflectorDTO* newReflector = new ReflectorDTO();
 
 	newReflector->length = alphabetSize;
@@ -49,8 +46,7 @@ ReflectorDTO* ReflectorService::GetInputFromUser() {
 }
 
 
-ReflectorDTO* ReflectorService::GetReflector(int index)
-{
+ReflectorDTO* ReflectorService::GetReflector(int index) {
 	return reflectorsArray[index];
 }
 

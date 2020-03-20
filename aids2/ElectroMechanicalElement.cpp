@@ -1,6 +1,5 @@
 #include "ElectroMechanicalElement.h"
 
-ElectroMechanicalElement::~ElectroMechanicalElement()
-{
+ElectroMechanicalElement::~ElectroMechanicalElement() {
 	delete[] signalOutlet;
 }

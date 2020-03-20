@@ -12,28 +12,29 @@ typedef struct RotorDTO {
 } rotor;
 
 class Rotor :
-	public ElectroMechanicalElement
-{
+	public ElectroMechanicalElement {
 public:
 	Rotor(RotorDTO* rotor);
 	~Rotor() override;
-	void SetInitialPosition(int position);
 	bool IsLocked();
 	void Turn();
 	int GetLetterByPermutation(int input) override;
 	int GetPermutationByLetter(int input) override;
 	bool IsLockedBefore();
+	void CleanNotch();
 	
 private:
+	RotorDTO* rotorPattern;
 	int currentPosition;
 	int* turnoverPositions;
 	int amountOfTurnoverPositions;
 	int length;
 	bool notchSet;
 
-	void populateWithPermutations(RotorDTO* rotor);
-	void populateWithTurnovers(RotorDTO* rotor);
+	void populateWithPermutations();
+	void populateWithTurnovers();
 	int getIndex(int index) const;
 	int mathematicalRemainder(int value) const;
+	void setInitialPosition();
 };
 

@@ -4,8 +4,7 @@
 #include "ReflectorService.h"
 #include "RotorService.h"
 
-class TaskManager
-{
+class TaskManager {
 public:
 	TaskManager(RotorService* rotorService, ReflectorService* reflectorService);
 	~TaskManager();

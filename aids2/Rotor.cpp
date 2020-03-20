@@ -1,37 +1,38 @@
 #include "Rotor.h"
 #include <iostream>
 
-Rotor::Rotor(RotorDTO* rotor)
-{
-	length = rotor->length;
+Rotor::Rotor(RotorDTO* rotor) : rotorPattern(rotor) {
+	length = rotorPattern->length;
 	signalOutlet = new Circuit[length];
 	currentPosition = 0;
 	notchSet = false;
 	turnoverPositions = nullptr;
 	amountOfTurnoverPositions = 0;
 
-	populateWithPermutations(rotor);
-	populateWithTurnovers(rotor);
-
-	SetInitialPosition(rotor->initialTurn);
+	populateWithPermutations();
+	populateWithTurnovers();
+	setInitialPosition();
 }
 
-void Rotor::populateWithPermutations(RotorDTO* rotor)
-{	
+void Rotor::populateWithPermutations() {	
 	for (int i = 0; i < length; i++) {
-		const int delta = (rotor->signalOutlet[getIndex(i)].permutation - 1) - i;
-		signalOutlet[getIndex(i)].permutation = delta;
-		signalOutlet[getIndex(delta +i)].letter = -delta;
+		const int offset = 1;
+		const int indexOfPermutation = getIndex(i);
+		const int delta = rotorPattern->signalOutlet[indexOfPermutation].permutation - offset - i;
+		const int indexOfAlphabet = getIndex(delta + i);
+
+		signalOutlet[indexOfPermutation].permutation = delta;
+		signalOutlet[indexOfAlphabet].letter = -delta;
 	}
 }
 
-void Rotor::populateWithTurnovers(RotorDTO* rotor)
-{
-	amountOfTurnoverPositions = rotor->amountOfTurnoverPositions;
+void Rotor::populateWithTurnovers() {
+	const int offset = 1;
+	amountOfTurnoverPositions = rotorPattern->amountOfTurnoverPositions;
 	turnoverPositions = new int[amountOfTurnoverPositions];
 
 	for(int i=0; i<amountOfTurnoverPositions; i++) {
-		turnoverPositions[i] = rotor->turnoverPositions[i]-1;
+		turnoverPositions[i] = rotorPattern->turnoverPositions[i]-offset;
 	}
 }
 
@@ -39,8 +40,7 @@ Rotor::~Rotor() {
 	delete[] turnoverPositions;
 }
 
-bool Rotor::IsLocked()
-{
+bool Rotor::IsLocked() {
 	for(int i=0; i<amountOfTurnoverPositions; i++) {
 		if(turnoverPositions[i] == currentPosition && notchSet) {
 			notchSet = false;
@@ -50,10 +50,10 @@ bool Rotor::IsLocked()
 	return false;
 }
 
-bool Rotor::IsLockedBefore()
-{
+bool Rotor::IsLockedBefore() {
 	for (int i=0; i<amountOfTurnoverPositions; i++) {
 		const int realTurnoverPos = mathematicalRemainder(turnoverPositions[i] - 1);
+
 		if (realTurnoverPos == currentPosition && notchSet) {
 			notchSet = false;
 			return true;
@@ -62,12 +62,11 @@ bool Rotor::IsLockedBefore()
 	return false;
 }
 
-void Rotor::Turn()
-{
+void Rotor::Turn() {
 	currentPosition++;
 	currentPosition = currentPosition % length;
 
-	for (int i=0;i<amountOfTurnoverPositions;i++) {
+	for (int i=0; i<amountOfTurnoverPositions; i++) {
 		const int realTurnoverPos = mathematicalRemainder(turnoverPositions[i] - 1);
 		
 		if (currentPosition == realTurnoverPos) {
@@ -76,30 +75,27 @@ void Rotor::Turn()
 	}
 }
 
-void Rotor::SetInitialPosition(int position)
-{
-	currentPosition = position-1;
-	notchSet = false;
+void Rotor::setInitialPosition() {
+	const int offset = 1;
+	currentPosition = rotorPattern->initialTurn - offset;
 }
 
-int Rotor::GetLetterByPermutation(int input)
-{
+int Rotor::GetLetterByPermutation(int input) {
 	const int delta = signalOutlet[getIndex(input)].permutation;
+	const int result = mathematicalRemainder(input + delta);
 
-	const int result = (input + delta) % length;
-	return result >= 0 ? result : result + length;
+	return result;
 }
 
-int Rotor::GetPermutationByLetter(int input)
-{
+int Rotor::GetPermutationByLetter(int input) {
 	const int delta = signalOutlet[getIndex(input)].letter;
+	const int result = mathematicalRemainder(input + delta);
 
-	const int result = (input + delta) % length;
-	return result >= 0 ? result : result + length;
+	return result;
 }
 
 int Rotor::getIndex(int index) const {
-	const int currentIndex = (index + currentPosition) % length;
+	const int currentIndex = mathematicalRemainder(index + currentPosition);
 	
 	return currentIndex;
 }
@@ -111,4 +107,8 @@ int Rotor::mathematicalRemainder(int value) const {
 		return result;
 	else
 		return result + length;
+}
+
+void Rotor::CleanNotch() {
+	notchSet = false;
 }

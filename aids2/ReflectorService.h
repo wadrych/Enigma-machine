@@ -1,8 +1,7 @@
 #pragma once
 #include "Reflector.h"
 
-class ReflectorService
-{
+class ReflectorService {
 public:
 	ReflectorService(int alphabetSize);
 	~ReflectorService();
@@ -14,6 +13,6 @@ private:
 	int alphabetSize;
 	int length;
 
-	ReflectorDTO* GetInputFromUser();
+	ReflectorDTO* createReflector();
 };
 

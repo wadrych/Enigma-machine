@@ -1,8 +1,7 @@
 #pragma once
 #include "Rotor.h"
 
-class RotorService
-{
+class RotorService {
 public:
 	RotorService(int alphabetSize);
 	~RotorService();
@@ -14,6 +13,8 @@ private:
 	int alphabetSize;
 	int length;
 
-	RotorDTO* GetInputFromUser();
+	RotorDTO* createRotor();
+	static void readCircuits(RotorDTO* newRotor, Circuit* signalOutlet);
+	static void readTurnovers(RotorDTO* newRotor,  int* turnoverPositions);
 };
 

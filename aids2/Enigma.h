@@ -3,8 +3,7 @@
 #include "Rotor.h"
 #include "Reflector.h"
 
-class Enigma
-{
+class Enigma {
 public:
 	Enigma(int amountOfParts);
 	~Enigma();

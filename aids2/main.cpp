@@ -7,8 +7,7 @@
 #include <iostream>
 #include "TaskManager.h"
 
-int main ()
-{
+int main () {
 	int alphabetSize = 0;
 	int amountOfTasks = 0;
 

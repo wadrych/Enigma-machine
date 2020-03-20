@@ -6,8 +6,7 @@ TaskManager::TaskManager(RotorService* rotorService, ReflectorService* reflector
 TaskManager::~TaskManager() {
 }
 
-void TaskManager::PerformTask()
-{
+void TaskManager::PerformTask() {
 	int reflectorAmount = 1;
 	int amountOfRotors;
 	int amountOfParts;
@@ -30,8 +29,7 @@ void TaskManager::PerformTask()
 	printf_s("\n");
 }
 
-void TaskManager::SetRotors(Enigma* enigma, int amountOfRotors)
-{
+void TaskManager::SetRotors(Enigma* enigma, int amountOfRotors) {
 	for (int i = 0; i < amountOfRotors; i++) {
 		int rotorIndex = 0;
 		int rotorPosition = 0;
@@ -44,8 +42,7 @@ void TaskManager::SetRotors(Enigma* enigma, int amountOfRotors)
 	}
 }
 
-void TaskManager::SetReflector(Enigma* enigma)
-{
+void TaskManager::SetReflector(Enigma* enigma) {
 	int reflectorIndex;
 	
 	scanf_s("%i", &reflectorIndex);
@@ -53,8 +50,7 @@ void TaskManager::SetReflector(Enigma* enigma)
 	enigma->AddReflector(reflector);
 }
 
-void TaskManager::EncodeLetter(Enigma* enigma, int* letter)
-{
+void TaskManager::EncodeLetter(Enigma* enigma, int* letter) {
 	const int encodedLetter = enigma->EncodeLetter(*letter);
 	printf_s("%i ", encodedLetter);
 	scanf_s("%i", letter);

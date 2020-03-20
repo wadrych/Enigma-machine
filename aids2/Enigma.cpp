@@ -1,14 +1,12 @@
 #include "Enigma.h"
 
-Enigma::Enigma(int amountOfParts) : amountOfParts(amountOfParts)
-{
+Enigma::Enigma(int amountOfParts) : amountOfParts(amountOfParts) {
 	indexOfLastAddedRotor = 0;
 	parts = new ElectroMechanicalElement * [amountOfParts];
 	rotors = new Rotor * [amountOfParts - 1];
 }
 
-Enigma::~Enigma()
-{
+Enigma::~Enigma() {
 	for(int i=0;i<amountOfParts-1;i++) {
 		delete rotors[i];
 		rotors[i] = nullptr;
@@ -25,28 +23,25 @@ Enigma::~Enigma()
 	rotors = nullptr;
 }
 
-void Enigma::AddRotor(RotorDTO* rotor)
-{
+void Enigma::AddRotor(RotorDTO* rotor) {
 	Rotor* newRotor = new Rotor(rotor);
 	parts[indexOfLastAddedRotor] = newRotor;
 	rotors[indexOfLastAddedRotor] = newRotor;
 	indexOfLastAddedRotor++;
 }
 
-void Enigma::AddReflector(ReflectorDTO* reflector)
-{
+void Enigma::AddReflector(ReflectorDTO* reflector) {
+	const int lastIndex = amountOfParts - 1;
 	Reflector* newReflector = new Reflector(reflector);
-	parts[amountOfParts-1] = newReflector;
+	parts[lastIndex] = newReflector;
 }
 
-int Enigma::EncodeLetter(int letter)
-{
+int Enigma::EncodeLetter(int letter) {
 	setRotators();
-	return RunLetterThroughParts(letter-1);
+	return runLetterThroughParts(letter-1);
 }
 
-void Enigma::setRotators()
-{
+void Enigma::setRotators() {
 	rotors[0]->Turn();
 
 	if(amountOfParts == 3) {
@@ -59,15 +54,15 @@ void Enigma::setRotators()
 		if (rotors[1]->IsLockedBefore()) {
 			rotors[1]->Turn();
 			rotors[2]->Turn();
+			rotors[0]->CleanNotch();
 		}
-		else if(rotors[0]->IsLocked()) {
+		if(rotors[0]->IsLocked()) {
 			rotors[1]->Turn();
 		}
 	}
 }
 
-int Enigma::runLetterThroughParts(int letter)
-{
+int Enigma::runLetterThroughParts(int letter) {
 	int output = letter;
 	
 	for (int k = 0; k < amountOfParts; k++) {
