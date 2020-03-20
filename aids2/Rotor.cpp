@@ -8,6 +8,7 @@ Rotor::Rotor(RotorDTO* rotor) : rotorPattern(rotor) {
 	currentPosition = 0;
 	notchSet = false;
 	amountOfTurnoverPositions = 0;
+	rotated = false;
 
 	populateWithPermutations();
 	populateWithTurnovers();
@@ -45,7 +46,9 @@ Rotor::~Rotor() {
 }
 
 bool Rotor::IsLocked() {
-	if(turnoverPositions[currentPosition] && notchSet) {
+	const int indexOfNextElement = mathematicalRemainder(currentPosition + 1);
+
+	if (notchSet) {
 		notchSet = false;
 		return true;
 	}
@@ -53,27 +56,29 @@ bool Rotor::IsLocked() {
 		return false;
 	}
 }
+/*
+bool Rotor::TryTurn(int rotorIndex, bool shouldTurn, int amountOfRotors) {
+	if(rotorIndex<amountOfRotors-1 && rotorIndex<2 && rotated) {
+		if(isLocked()) {
+			turn();
+			return true;
+		}
+	}
 
-bool Rotor::IsLockedBefore() {
-	const int indexOfElementBefore = mathematicalRemainder(currentPosition + 1);
-	
-	if(turnoverPositions[indexOfElementBefore] && notchSet) {
-		notchSet = false;
-		return true;
+	if(shouldTurn) {
+		turn();
 	}
-	else {
-		return false;
-	}
+
+	return false;
 }
-
+*/
 void Rotor::Turn() {
+	rotated = true;
+	const int indexOfNextElement = mathematicalRemainder(currentPosition + 2);
+	notchSet = turnoverPositions[indexOfNextElement];
+	
 	currentPosition++;
 	currentPosition = currentPosition % length;
-
-	const int indexOfNextElement = mathematicalRemainder(currentPosition + 1);
-	if(turnoverPositions[indexOfNextElement]) {
-		notchSet = true;
-	}
 }
 
 void Rotor::setInitialPosition() {
@@ -110,6 +115,6 @@ int Rotor::mathematicalRemainder(int value) const {
 		return result + length;
 }
 
-void Rotor::CleanNotch() {
-	notchSet = false;
+bool Rotor::IsRotated() {
+	return rotated;
 }

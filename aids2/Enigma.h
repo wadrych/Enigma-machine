@@ -11,7 +11,6 @@ public:
 	void AddReflector(ReflectorDTO* reflector);
 	int EncodeLetter(int letter);
 	
-	
 private:
 	ElectroMechanicalElement** parts;
 	Rotor** rotors;
@@ -20,5 +19,7 @@ private:
 
 	void setRotators();
 	int runLetterThroughParts(int letter);
+	bool changeRotor(int rotorIndex, bool shouldTurn, int amountOfRotors);
+
 };
 

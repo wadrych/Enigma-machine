@@ -42,7 +42,18 @@ int Enigma::EncodeLetter(int letter) {
 }
 
 void Enigma::setRotators() {
-	rotors[0]->Turn();
+	bool shouldNextRotate = changeRotor(0, true, amountOfParts);
+
+	for(int i=1; i<amountOfParts-2; i++) {
+		
+		shouldNextRotate = changeRotor(i, shouldNextRotate, amountOfParts);
+	}
+
+	if (shouldNextRotate && amountOfParts-2 != 0) {
+		rotors[amountOfParts - 2]->Turn();
+	}
+	
+	/*rotors[0]->Turn();
 
 	if(amountOfParts == 3) {
 		if (rotors[0]->IsLocked()) {
@@ -60,7 +71,21 @@ void Enigma::setRotators() {
 		else if(rotors[0]->IsLocked()) {
 			rotors[1]->Turn();
 		}
+	}*/
+}
+
+bool Enigma::changeRotor(int rotorIndex, bool shouldTurn, int amountOfRotors) {
+	if (rotorIndex < 2 && rotors[rotorIndex]->IsRotated() && rotors[rotorIndex]->IsLocked()) {
+		rotors[rotorIndex]->Turn();
+		return true;
 	}
+
+	if (amountOfRotors-1 == rotorIndex - 2) return true;
+	
+	if (shouldTurn ) {
+		rotors[rotorIndex]->Turn();
+	}
+	return false;
 }
 
 int Enigma::runLetterThroughParts(int letter) {
