@@ -53,7 +53,8 @@ bool Rotor::IsLocked()
 bool Rotor::IsLockedBefore()
 {
 	for (int i=0; i<amountOfTurnoverPositions; i++) {
-		if (turnoverPositions[i]-1 == currentPosition && notchSet) {
+		const int realTurnoverPos = mathematicalRemainder(turnoverPositions[i] - 1);
+		if (realTurnoverPos == currentPosition && notchSet) {
 			notchSet = false;
 			return true;
 		}
@@ -67,7 +68,9 @@ void Rotor::Turn()
 	currentPosition = currentPosition % length;
 
 	for (int i=0;i<amountOfTurnoverPositions;i++) {
-		if (currentPosition == turnoverPositions[i]-1) {
+		const int realTurnoverPos = mathematicalRemainder(turnoverPositions[i] - 1);
+		
+		if (currentPosition == realTurnoverPos) {
 			notchSet = true;
 		}
 	}
@@ -99,4 +102,13 @@ int Rotor::getIndex(int index) const {
 	const int currentIndex = (index + currentPosition) % length;
 	
 	return currentIndex;
+}
+
+int Rotor::mathematicalRemainder(int value) const {
+	const int result = value % length;
+
+	if (result >= 0)
+		return result;
+	else
+		return result + length;
 }

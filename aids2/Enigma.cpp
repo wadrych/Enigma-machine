@@ -42,7 +42,7 @@ void Enigma::AddReflector(ReflectorDTO* reflector)
 int Enigma::EncodeLetter(int letter)
 {
 	setRotators();
-	return runLetterThroughParts(letter-1);
+	return RunLetterThroughParts(letter-1);
 }
 
 void Enigma::setRotators()
