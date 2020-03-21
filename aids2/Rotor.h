@@ -16,12 +16,11 @@ class Rotor :
 public:
 	Rotor(RotorDTO* rotor);
 	~Rotor() override;
-	bool IsLocked();
 	void Turn();
 	int GetLetterByPermutation(int input) override;
 	int GetPermutationByLetter(int input) override;
-	bool IsLockedBefore();
-	void CleanNotch();
+	bool IsNextNotchPosition();
+	bool Rotated();
 	
 private:
 	RotorDTO* rotorPattern;
@@ -30,6 +29,7 @@ private:
 	int amountOfTurnoverPositions;
 	int length;
 	bool notchSet;
+	bool isRotated;
 
 	void populateWithPermutations();
 	void populateWithTurnovers();

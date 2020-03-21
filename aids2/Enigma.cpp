@@ -42,25 +42,18 @@ int Enigma::EncodeLetter(int letter) {
 }
 
 void Enigma::setRotators() {
-	rotors[0]->Turn();
+	const int amountOfRotors = amountOfParts - 1;
 
-	if(amountOfParts == 3) {
-		if (rotors[0]->IsLocked()) {
-			rotors[1]->Turn();
-		}
-	}
-
-	if(amountOfParts >= 4) {
-		if (rotors[1]->IsLockedBefore()) {
-			//rotors[0]->CleanNotch();
-			rotors[0]->IsLocked();
+	if(amountOfRotors > 1) {
+		if(rotors[1]->IsNextNotchPosition() && amountOfRotors > 2 && rotors[1]->Rotated()) {
 			rotors[1]->Turn();
 			rotors[2]->Turn();
 		}
-		else if(rotors[0]->IsLocked()) {
+		else if(rotors[0]->IsNextNotchPosition() && rotors[0]->Rotated()) {
 			rotors[1]->Turn();
 		}
 	}
+	rotors[0]->Turn();
 }
 
 int Enigma::runLetterThroughParts(int letter) {

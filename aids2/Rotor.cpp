@@ -8,6 +8,7 @@ Rotor::Rotor(RotorDTO* rotor) : rotorPattern(rotor) {
 	currentPosition = 0;
 	notchSet = false;
 	amountOfTurnoverPositions = 0;
+	isRotated = false;
 
 	populateWithPermutations();
 	populateWithTurnovers();
@@ -44,32 +45,10 @@ Rotor::~Rotor() {
 	delete[] turnoverPositions;
 }
 
-bool Rotor::IsLocked() {
-	if(turnoverPositions[currentPosition] && notchSet) {
-		notchSet = false;
-		return true;
-	}
-	else {
-		return false;
-	}
-}
-
-bool Rotor::IsLockedBefore() {
-	const int indexOfElementBefore = mathematicalRemainder(currentPosition + 1);
-	
-	if(turnoverPositions[indexOfElementBefore] && notchSet) {
-		notchSet = false;
-		return true;
-	}
-	else {
-		return false;
-	}
-}
-
 void Rotor::Turn() {
 	currentPosition++;
 	currentPosition = currentPosition % length;
-
+	isRotated = true;
 	const int indexOfNextElement = mathematicalRemainder(currentPosition + 1);
 	if(turnoverPositions[indexOfNextElement]) {
 		notchSet = true;
@@ -110,6 +89,13 @@ int Rotor::mathematicalRemainder(int value) const {
 		return result + length;
 }
 
-void Rotor::CleanNotch() {
-	notchSet = false;
+bool Rotor::IsNextNotchPosition()
+{
+	const int indexOfNextElement = mathematicalRemainder(currentPosition + 1);
+	return turnoverPositions[indexOfNextElement];
+}
+
+bool Rotor::Rotated()
+{
+	return isRotated;
 }
